@@ -23,6 +23,12 @@ return [
             ],
             [
                 'profile-gallery' => NULL
+            ],
+            [
+                'profile-auth' => NULL 
+            ],
+            [
+                'lib-form' => NULL 
             ]
         ],
         'optional' => []
@@ -48,6 +54,27 @@ return [
                 'handler' => 'ApiProfileGallery\\Controller\\Gallery::index',
                 'method' => 'GET'
             ],
+            'apiProfileGalleryCreate' => [
+                'path' => [
+                    'value' => '/profile/read/(:name)/gallery',
+                    'params' => [
+                        'name' => 'slug'
+                    ]
+                ],
+                'handler' => 'ApiProfileGallery\\Controller\\Gallery::create',
+                'method' => 'POST'
+            ],
+            'apiProfileGalleryRemove' => [
+                'path' => [
+                    'value' => '/profile/read/(:name)/gallery/(:id)',
+                    'params' => [
+                        'name' => 'slug',
+                        'id' => 'number'
+                    ]
+                ],
+                'handler' => 'ApiProfileGallery\\Controller\\Gallery::remove',
+                'method' => 'DELETE'
+            ],
             'apiProfileGallerySingle' => [
                 'path' => [
                     'value' => '/profile/read/(:name)/gallery/(:id)',
@@ -58,6 +85,70 @@ return [
                 ],
                 'handler' => 'ApiProfileGallery\\Controller\\Gallery::single',
                 'method' => 'GET'
+            ],
+            'apiProfileGalleryUpdate' => [
+                'path' => [
+                    'value' => '/profile/read/(:name)/gallery/(:id)',
+                    'params' => [
+                        'name' => 'slug',
+                        'id' => 'number'
+                    ]
+                ],
+                'handler' => 'ApiProfileGallery\\Controller\\Gallery::update',
+                'method' => 'PUT'
+            ]
+        ]
+    ],
+    'libForm' => [
+        'forms' => [
+            'api.profile-gallery.create' => [
+                '@extends' => ['api.profile-gallery.edit'],
+                'title' => [
+                    'rules' => [
+                        'required' => true 
+                    ]
+                ],
+                'images' => [
+                    'rules' => [
+                        'required' => true 
+                    ]
+                ]
+            ],
+            'api.profile-gallery.edit' => [
+                'title' => [
+                    'label' => 'Title',
+                    'rules' => []
+                ],
+                'images' => [
+                    'label' => 'Image List',
+                    'rules' => [
+                        'array' => TRUE,
+                        'length' => [
+                            'min' => 1
+                        ]
+                    ],
+                    'children' => [
+                        '*' => [
+                            'rules' => [
+                                'object' => true
+                            ],
+                            'children' => [
+                                'url' => [
+                                    'rules' => [
+                                        'required' => true,
+                                        'empty' => false,
+                                        'upload' => 'std-image' 
+                                    ]
+                                ],
+                                'label' => [
+                                    'rules' => [
+                                        "required" => true
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]
     ]
